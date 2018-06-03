@@ -19,8 +19,8 @@ void led_off(void)
 
 void adc_pin_config (void)
 {
- DDRC = DDRC|0xC0; //set PORTF direction as input
- PORTC = PORTC&0xC0; //set PORTF pins floating
+ DDRC = DDRC|0xC0; 
+ PORTC = PORTC&0xC0; 
 }
 
 void port_init(void)
@@ -32,10 +32,10 @@ void port_init(void)
 void adc_init()
 {
   ADCSRA = 0x00;
-  ADCSRB = 0x00;    //MUX5 = 0
-  ADMUX = 0x40;   //Vref=5V external --- ADLAR=1 --- MUX4:0 = 0000
+  ADCSRB = 0x00;    
+  ADMUX = 0x40;   
   ACSR = 0x80;
-  ADCSRA = 0x87;    //ADEN=1 --- ADIE=1 --- ADPS2:0 = 1 1 0
+  ADCSRA = 0x87;    
 }
 
 unsigned int ADC_Conversion(unsigned int Ch)
@@ -48,21 +48,21 @@ unsigned int ADC_Conversion(unsigned int Ch)
   }
   Ch = Ch & 0x07;       
   ADMUX= 0x40| Ch;        
-  ADCSRA = ADCSRA | 0x40;   //Set start conversion bit
-  while((ADCSRA&0x10)==0);  //Wait for ADC conversion to complete
+  ADCSRA = ADCSRA | 0x40;   
+  while((ADCSRA&0x10)==0);  
   a=ADCL;
   b=ADCH;
-  ADCSRA = ADCSRA|0x10; //clear ADIF (ADC Interrupt Flag) by writing 1 to it
+  ADCSRA = ADCSRA|0x10; 
   ADCSRB = 0x00;
   return (b<<8)|a;
 }
 
 void init_devices (void)
 {
- cli(); //Clears the global interrupts
+ cli(); 
  port_init();
  adc_init();
- sei(); //Enables the global interrupts
+ sei(); 
 }
 
 void setup(){
